@@ -1,0 +1,23 @@
+<div class="card" style="height: 300px; overflow-y: scroll; width: 40rem;">
+    <div class="card-title">
+        <h3><b>{{title}}</b></h3>
+    </div>    
+    <ul class="list-group">
+    {%for gRequest in reQ%}
+        {%if requestType == "r" %}
+            <li class="list-group-item">{{gRequest.by.get_fullname}}
+                <div class="float-end">
+                    <button class="btn btn-sm btn-success me-2" onclick="acceptRequest('acceptR/{{gRequest.by.id}}')">Accept</button>
+                    <button class="btn btn-sm btn-danger me-2" onclick="rejectRequest('rejectR/{{gRequest.by.id}}')">Reject</button>
+                </div>
+            </li>
+        {%else%}
+            <li class="list-group-item">{{gRequest.to.get_fullname}}
+                <div class="float-end">
+                    <button class="btn btn-sm btn-danger me-2" onclick="cancelRequest('cReq/{{gRequest.to.id}}')">Cancel Request</button>
+                </div>
+            </li>
+        {%endif%}
+    {%endfor%}
+    </ul>
+</div>

@@ -1,0 +1,23 @@
+<div class="mt-1 mb-2">
+    <form id="formComment-{{pid}}-{{id}}">
+        <input type="hidden" value="{{id}}" name="forComment">
+        <input type="hidden" value="{{pid}}" name="post">
+        {%csrf_token%}
+        <div class="row">
+            <div class="col-2">
+                <label class="form-label" style="font-size: 13.6px; font-weight: bold;">{{cType}}</label>
+            </div>
+            <div class="col-10">
+                <textarea class="form-control" name="commentArea" maxlength="256" rows="2" id="comment-area-{{pid}}-{{id}}" oninput="remainingChars('{{pid}}-{{id}}')"></textarea>
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col-9 ms-2">
+                <button class="btn btn-primary btn-sm w-100" onclick="postComment(event, '{{pid}}-{{id}}')">{{cType}}</button>
+            </div>
+            <div class="col-2">
+                <p style="font-size: 18px;" id="cChars-{{pid}}-{{id}}">0/256</p>
+            </div>
+        </div>
+    </form>
+</div>

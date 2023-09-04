@@ -1,0 +1,24 @@
+{%extends 'base.html' %}
+
+{%block title%} {{request.user}} {%endblock%}
+
+{%block head%}
+    {%load static%}
+    <script src="{%static 'js/indexF.js' %}"></script>
+    
+    
+{%endblock%}
+
+{%block body%}
+
+        {% include 'components/navbar.html' %}
+        <div id="liveAlertPlaceholder"></div>
+
+    <div id="main-Space">
+        {% include 'components/homePage/feedPage.html'%}
+    </div>
+
+
+
+    
+{%endblock%}

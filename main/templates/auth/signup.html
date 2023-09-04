@@ -1,0 +1,10 @@
+{%extends 'base.html'%}
+{%block title%}SignUp{%endblock%}
+
+{%block body%}
+    <div class="d-flex flex-column container mt-5">
+        {%include 'components/form.html' with button_name="SignUp" %}
+        <label class="p-2 form-label">Already have an Account? <a class="btn btn-link" href="{% url 'login' %}">Login here</a></label>
+
+    </div>
+{%endblock%}

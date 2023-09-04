@@ -1,0 +1,33 @@
+<div class="border-2 border border-top-0 border-bottom-0 px-2">
+    
+        <div class="mt-3" ><b>{{comment.user}}</b>
+            {%if comment.reply %}
+                <small class="text-muted">replies</small> <b style="color:cadetblue;">{{comment.reply.user}}</b>
+            {%endif%}
+            
+            <small class="text-muted">on {{comment.created}}</small>
+        </div>
+        <div class="border p-2 rounded">
+            <span>{{comment.comment}}</span>
+
+            <div class="d-flex justify-content-end">
+                <a class="btn btn-link" href="#reply-{{comment.id}}" data-bs-toggle="collapse" >reply</a>
+                {%if comment.user == request.user%}
+                &nbsp;<button class="btn btn-link" onclick="deleteComment('{{comment.id}}', '{{posts.id}}')">delete</button>
+                {%endif%}
+            </div>
+
+            <!-- Collapse for Replies -->
+            <div class="collapse" id="reply-{{comment.id}}">
+                {% include 'components/forComments/addComment.html' with id=comment.id cType='Reply' pid=posts.id%}
+            </div>
+
+        </div>         
+            
+
+
+
+    {%for reply in comment.allReplies%}
+        {% include 'components/forComments/comments.html' with comment=reply%}
+    {%endfor%}
+</div>

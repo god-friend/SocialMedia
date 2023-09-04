@@ -1,0 +1,10 @@
+<div class="overflow-auto" style="max-height: 500px;">
+    {% include 'components/forComments/addComment.html' with id=0 cType='Comment' pid=posts.id%}
+    {%for comment in posts.get_comments%}
+    <div>
+        {% if comment.isParent%}
+        {%include 'components/forComments/comments.html' with comment=comment%}
+        {%endif%}
+    </div>
+    {%endfor%}
+</div>

@@ -1,0 +1,43 @@
+<div class="card w-50">
+    <div class="card-header">
+        <b>{{posts.by.get_fullname}}</b> <small>posted</small>
+        {%if posts.by == request.user%}
+        <div class="dropdown float-end">
+            <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                ...
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><button class="btn btn-danger w-100" onclick="deletePost('{{loc}}', '{{posts.id}}')">Delete Post</button></li>
+              </ul>
+        </div>
+        {%endif%}
+    </div>
+    <div class="card-body" id="post-card">
+        <p>{{posts.post_text}}</p>
+
+        <div class="clearfix">
+            {%for url in posts.urls.urls|slice:":2"%}
+            <a href="{{url}}"><img src="{{url}}" class="col-md-4 float-md-start ms-md-5 me-5"></a>
+            {%endfor%}
+        </div>
+        <div class="mt-3">
+            <div class="float-start">
+                <a href="#" class="btn btn-outline-primary btn-sm position-relative">
+                    Like&nbsp;
+                    <span class="position-relative  badge rounded-pill bg-success" id="post-likes">
+                        {{posts.likes}}
+                    </span>
+                </a>
+                <a class="btn btn-outline-success btn-sm" data-bs-toggle="collapse" href="#collapseComment-{{posts.id}}">
+                    Comment
+                </a>
+            </div>
+            <div class="float-end">
+                <button class="btn btn-link" onclick="showFullPost('{{posts.id}}', window.scrollY)">Show Full Post</button>
+            </div>
+        </div>
+    </div>
+    <div class="collapse w-100" id="collapseComment-{{posts.id}}">
+    {% include 'components/forComments/showComments.html' %}
+    </div>
+</div>
