@@ -30,3 +30,6 @@ Simple Social Media Web App with live Notifications
 8. User Will get Live Notifications (if User is Online)
 9. User Will get Live Requests (if User is Online)
 10. User Can Search For Other Users By Their Name and Send Friend Request
+
+
+#### More Features Coming Soon
