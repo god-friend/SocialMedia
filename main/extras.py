@@ -44,6 +44,12 @@ def delete_post_pics(instance):
         os.remove(instance.pics_path+p)
     os.rmdir(instance.pics_path)
 
+def delProfilePic(picLoc):
+    filePath = MEDIA_DIR+"/"+picLoc
+    exists = os.path.exists(filePath)
+    if exists:
+        os.remove(filePath)
+
 
 def html_alert(message):
     html = '''<div class="position-absolute">

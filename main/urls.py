@@ -2,7 +2,7 @@ from django.urls import path
 from .views import sign_out, show_full_post, comment_on_post
 from .views import delete_comment, search_users, send_request, cancel_request, getR
 from .views import acceptR, rejectR, get_notifications, read_notification, showFriends
-from .views import showFriendFeed, myPosts, deletePost
+from .views import showFriendFeed, myPosts, deletePost, deleteProfilePic, markAllNotifRead
 from .views import LoginUser, NewUser
 from .views import HomeView, UserAccount, UserUploads
 
@@ -41,11 +41,13 @@ urlpatterns = [
 
     path("notifications/", get_notifications, name="notifications"),
     path("readNot/", read_notification, name="read_not"),
+    path("markRead", markAllNotifRead, name="markRead"),
 
     path("friends/", showFriends, name="friends"),
     path("fFeed/<int:friend>/", showFriendFeed, name="fFeed"),
 
     path("myPosts/", myPosts, name="mPosts"),
     
-    path("deletePosts/<int:pid>/", deletePost, name="deletePosts")
+    path("deletePosts/<int:pid>/", deletePost, name="deletePosts"),
+    path("delProPic/", deleteProfilePic, name="delProPic")
 ]

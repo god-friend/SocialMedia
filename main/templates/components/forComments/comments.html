@@ -1,8 +1,8 @@
 <div class="border-2 border border-top-0 border-bottom-0 px-2">
     
-        <div class="mt-3" ><b>{{comment.user}}</b>
+        <div class="mt-3" ><b>{{comment.user.get_fullname}}</b>
             {%if comment.reply %}
-                <small class="text-muted">replies</small> <b style="color:cadetblue;">{{comment.reply.user}}</b>
+                <small class="text-muted">replies to</small> <b style="color:cadetblue;">{{comment.reply.user.get_fullname}}</b>
             {%endif%}
             
             <small class="text-muted">on {{comment.created}}</small>

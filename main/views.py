@@ -7,7 +7,7 @@ from django.db.models import Q
 from .forms import LoginForm, CreateUserForm, ChangeUserForm
 
 from .models import Posts, Comments, Requests, Friends, Notifications
-from .extras import upload_post_pics, get_all_profile_pics
+from .extras import upload_post_pics, get_all_profile_pics, delProfilePic
 from .models import Users
 
 def sign_out(request):
@@ -157,34 +157,43 @@ class UserUploads(View):
         if show == 0:
             # Show the Latest Profile pic and Post Pic Uploaded
             latestPost = Posts.objects.filter(by=request.user).exclude(urls__urls__iexact="[]").last()
-            # if latestPost.urls["urls"]:
-            lUrl = latestPost.urls["urls"][0]
+            if not latestPost:
+                lUrl = None
+            else:
+                lUrl = latestPost.urls["urls"][0]
+
+            pPic = request.user.profile_pic
+            if pPic:
+                pPic = request.user.profile_pic.url
             # print(latestPost)
             data = {
                 "type": 1,
-                "profile": request.user.profile_pic.url,
+                "profile": pPic,
                 "postPics": lUrl
             }
             return render(request, "components/forAccount/account_page.html", data)
         elif show == 1:
             # Show All Profile Pics Uploaded Till Date
-            userProPics = request.user.profile_pic.url
-            indx = userProPics.rfind("/")
-            indxs = userProPics.find("/", userProPics.find("/")+1)
-            url = userProPics[:indx+1]
-            allProfilePics = get_all_profile_pics(userProPics[indxs:indx])
-            allProfilePicsUrl = [(url+pName) for pName in allProfilePics]
-            pages = Paginator(allProfilePicsUrl, 2)
-            page = request.GET.get("page")
-            if(page == None):
-                page = 1 
+            if request.user.profile_pic:
+                userProPics = request.user.profile_pic.url
+                indx = userProPics.rfind("/")
+                indxs = userProPics.find("/", userProPics.find("/")+1)
+                url = userProPics[:indx+1]
+                allProfilePics = get_all_profile_pics(userProPics[indxs:indx])
+                allProfilePicsUrl = [(url+pName) for pName in allProfilePics]
+                pages = Paginator(allProfilePicsUrl, 2)
+                page = request.GET.get("page")
+                if(page == None):
+                    page = 1 
 
-            data = {
-                "type": 10,
-                "pPics": pages.page(page),
-                "total_pages": pages.page_range,
-            }
-            return render(request, "components/forAccount/account_page.html", data)
+                data = {
+                    "type": 10,
+                    "pPics": pages.page(page),
+                    "total_pages": pages.page_range,
+                }
+                return render(request, "components/forAccount/account_page.html", data)
+            else:
+                return redirect("/uploads/0/")
         elif show == 2:
             # Show All pics Uploaded By user at Feed
             posts = Posts.objects.filter(by=request.user)
@@ -469,4 +478,42 @@ def deletePost(request, pid):
             return redirect("/myPosts/")
         return redirect("/home/1/")
 
+    return HttpResponse("Method Not Allowed")
+
+def deleteProfilePic(request):
+    if request.method == "GET":
+        if not request.user.is_authenticated:
+            return redirect("/")
+
+        loc = request.GET.get("pLoc")
+        s = loc.find("dp")
+
+        delProfilePic(loc[s:])
+        user = Users.objects.get(id=request.user.id)
+
+        end = loc.rfind("/")
+        profilePics = get_all_profile_pics(loc[s-1:end+1])
+        
+        if len(profilePics) > 0:
+            user.profile_pic = loc[s-1:end+1] + profilePics[0]
+        else:
+            user.profile_pic = None
+        user.save()
+
+        return redirect("/uploads/1/")
+
+    return HttpResponse("Method Not Allowed")
+
+def markAllNotifRead(request):
+    if request.method == "GET":
+        if not request.user.is_authenticated:
+            return redirect("/")
+        
+        nots = Notifications.objects.filter(to=request.user)
+        for x in nots:
+            x.isread = True
+            x.save()
+
+        return redirect("/notifications")
+    
     return HttpResponse("Method Not Allowed")

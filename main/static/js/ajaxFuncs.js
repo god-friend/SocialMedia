@@ -203,6 +203,13 @@ function deletePost(loc, pid){
     getAjaxRequest("deletePosts/"+pid+"/?loc="+loc);
 }
 
+function deleteProfilePic(pic){
+    getAjaxRequest("delProPic/?pLoc="+pic);
+}
+
+function markAllRead(){
+    getAjaxRequest("markRead");
+}
 
 function changeUserInfo(){
     $("#changeUserInfoForm").submit(function(e){
@@ -225,3 +232,4 @@ function newPost(){
         }
     )
 }
+

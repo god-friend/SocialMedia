@@ -11,7 +11,7 @@ def transform(x: list):
     while(i < len(x)):
         new_L.append(x[i:i+3])
         i+=3
-    print(new_L)
+    # print(new_L)
     return new_L
 
 @register.simple_tag
