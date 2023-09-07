@@ -83,7 +83,11 @@ def notify_user_comment(sender, instance, **kwargs):
         if instance.isParent():
             data["notification"] = byUser.get_fullname() + " Commented on Your Post." 
         else:
+            toUser = instance.reply.user
             data["notification"] = byUser.get_fullname() + " Replied to Your Comment."
+            data["to"] = toUser
+            if toUser == instance.user:
+                return
     else:
         if not instance.isParent():
             toUser = instance.reply.user
@@ -111,7 +115,6 @@ def notify_user_comment(sender, instance, **kwargs):
 def update_count(sender, instance, **kwargs):
     if instance.isread == True:
         toUser = instance.to
-        print(toUser)
         count = toUser.notify_count()
         group = "user_{0}".format(toUser.id)
         nData = {
