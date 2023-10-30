@@ -1,21 +1,14 @@
-$(document).ready(
-    (e) => {
-        $("#post-textarea").on("input", (event)=>{
-            var max_length = $("#post-textarea").attr("maxlength");
-            var curr_length = $("#post-textarea").val().length;
-
-            document.getElementById("used-chars").innerText = "";
-            document.getElementById("used-chars").innerText = curr_length + "/" + max_length;
-        })
-    }
-)
-
-function remainingChars(id){
-    $("#comment-area-"+id).on("input", (event)=>{
-        var max_length = $("#comment-area-"+id).attr("maxlength");
-        var curr_length = $("#comment-area-"+id).val().length;
-        document.getElementById("cChars-"+id).innerText = "";
-        document.getElementById("cChars-"+id).innerText = curr_length + "/" + max_length;
+function remainingChars(id, eleId){
+    console.log(id, eleId);
+    var element = document.getElementById(eleId);
+    id = "#" + id;
+    eleId = "#" + eleId;
+    $(id).on("input", (event)=>{
+        var max_length = $(id).attr("maxlength");
+        var curr_length = $(id).val().length;
+        console.log(max_length, " " , curr_length);
+        element.innerText = "";
+        element.innerText = curr_length + "/" + max_length;
     })
 }
 

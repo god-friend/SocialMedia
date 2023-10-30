@@ -19,6 +19,13 @@ def setvar(x):
     return x
 
 @register.simple_tag
+def createString(*args):
+    string = ""
+    for x in args:
+        string += str(x)
+    return string
+
+@register.simple_tag
 def isRequested(from_user, to_user):
     # print(from_user, to_user)
     try:

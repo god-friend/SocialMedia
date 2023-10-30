@@ -1,3 +1,4 @@
+{%load customFilters%}
 <div class="card w-50" id="upload-post">
     <div class="card-body">
         {%load static%}
@@ -8,8 +9,11 @@
             </div>
             
             <div>
-                <textarea id="post-textarea" class="form-control" rows="5" name="post_text" required maxlength="1024" ></textarea>
-                <div class="d-flex justify-content-end" style="font-size: 12px;" id="used-chars">0/1024</div>
+                {%setvar "post-textarea" as newPostId %}
+                {%setvar "used-chars" as eleId %}
+                <textarea id="{{newPostId}}" class="form-control" rows="5" name="post_text" required maxlength="1024" 
+                oninput="remainingChars('{{newPostId}}', '{{eleId}}')"></textarea>
+                <div class="d-flex justify-content-end" style="font-size: 12px;" id="{{eleId}}">0/1024</div>
             </div>
             
             <div>
