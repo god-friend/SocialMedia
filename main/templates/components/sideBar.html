@@ -1,0 +1,53 @@
+<div class="d-flex">
+
+    <div class="sidebar" id="mainSideBar">
+        <div class="closeButton">
+            <a href="javascript:void(0)" onclick="closeNav()">&#9747;</a>
+        </div>
+        <a href="javascript:void(0)" onclick="goHome()">Home</a>
+        <a href="javascript:void(0)" onclick="goToAccount()">Account</a>
+        <a class="position-relative" href="javascript:void(0)" onclick="getNotifications()">Notifications
+            <span class="position-absolute top-2 start-90 translate-middle badge rounded-pill bg-transparent" 
+            id="notify-count">
+                {%if request.user.notify_count != 0%}
+                {{request.user.notify_count}}
+                {%else%}
+                    0
+                {%endif%}
+                </span>
+        </a>
+        <a class="position-relative" href="javascript:void(0)" onclick="getRequests()">Requests
+            <span class="position-absolute top-2 start-90 translate-middle badge rounded-pill bg-transparent" 
+            id="requests-count">
+                {%if request.user.request_count != 0%}
+                {{request.user.request_count}}
+                {%else%}
+                    0
+                {%endif%}
+                </span>
+        </a>
+
+        <div class="userOpts">
+                <div class="userImage">
+                    <img src="{{request.user.profile_pic.url}}">
+                </div>
+                <div class="dropDownMenu">
+                    <div class="dropup dropup-center">
+                        <button class="btn btn-outline-light dropdown-toggle btn-sm btnBr" type="button" data-bs-toggle="dropdown">
+                          {{request.user.get_fullname}}
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="{% url "logout" %}">Logout</a></li>
+                        </ul>
+                      </div>
+                </div>
+        </div>
+    </div>
+
+    <div class="headerTitle">
+        <a onclick="openNav()" href="javascript:void(0)">&#9776;</a>
+        <p>Social Media</p>
+    </div>
+
+    
+</div>

@@ -8,7 +8,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(verbose_name="Username", max_length=256, unique=True, help_text="Username Must be Lowercase alphabets")
     firstname = models.CharField(max_length=256)
     lastname = models.CharField(max_length=256)
-    profile_pic = models.FileField(upload_to=upload_profile_pic)
+    profile_pic = models.FileField(default="/defaults/default-user.png", upload_to=upload_profile_pic)
     last_login = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     is_staff = models.BooleanField(default=False)
