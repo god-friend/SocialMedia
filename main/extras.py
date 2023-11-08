@@ -1,5 +1,6 @@
 import os
 from django.conf import settings
+from datetime import datetime
 
 MEDIA_DIR = settings.MEDIA_ROOT
 
@@ -12,11 +13,15 @@ def check_and_create_dir(path, dirname):
 
 def upload_profile_pic(instance, file):
     check_and_create_dir(MEDIA_DIR, 'dp')
+    fileExt = file.split(".")[1]
+    now = datetime.now()
+    filename = now.strftime("%Y%m%d-%H%M%S.%f") + "." + fileExt
+    
+    return 'dp/user_{0}/{1}'.format(instance.id, filename)
 
-    return 'dp/user_{0}/{1}'.format(instance.id, file)
 
-
-def get_all_profile_pics(path):
+def getAllPics(path):
+    # print(MEDIA_DIR)
     return os.listdir(MEDIA_DIR+path)
 
 
@@ -24,10 +29,12 @@ def upload_post_pics(file, user_id, post_id):
     check_and_create_dir(MEDIA_DIR, "posts")
     check_and_create_dir(MEDIA_DIR+"/posts" , "user_{0}".format(user_id))
     check_and_create_dir(MEDIA_DIR+"/posts/user_{0}".format(user_id), "post_{0}".format(post_id))
-
+    fileExt = file.name.split(".")[1]
+    now = datetime.now()
+    fileName = now.strftime("%Y%m%d-%H%M%S.%f") + "." + fileExt
     file_path = MEDIA_DIR + "/posts/user_{0}/post_{1}/".format(user_id, post_id) 
-    url = "media/posts/user_{0}/post_{1}/{2}".format(user_id, post_id, file.name)
-    with open(file_path+file.name, "wb+") as dest:
+    url = "media/posts/user_{0}/post_{1}/{2}".format(user_id, post_id, fileName)
+    with open(file_path+fileName, "wb+") as dest:
         for chunk in file.chunks():
             dest.write(chunk)
     
@@ -44,17 +51,11 @@ def delete_post_pics(instance):
         os.remove(instance.pics_path+p)
     os.rmdir(instance.pics_path)
 
-def delProfilePic(picLoc):
-    filePath = MEDIA_DIR+"/"+picLoc
+
+# Need to delete Dir if empty
+def delPic(picLocation):
+    filePath = MEDIA_DIR + "/" + picLocation
     exists = os.path.exists(filePath)
     if exists:
         os.remove(filePath)
-
-
-def html_alert(message):
-    html = '''<div class="position-absolute">
-    <div class="alert alert-success alert-dismissible" role="alert">{0}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    </div>'''.format(message)
-    return html
+        

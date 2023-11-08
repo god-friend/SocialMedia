@@ -1,0 +1,9 @@
+<div class="d-flex justify-content-center mt-1">
+    {% include 'components/forPosts/new_post.html' %}
+</div>
+
+{%for posts in post%}
+<div class="d-flex justify-content-center mt-2">
+    {% include 'components/forPosts/post.html' with loc="home" goBack="home" divId="main-Space" %}
+</div>
+{%endfor%}

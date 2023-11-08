@@ -1,0 +1,27 @@
+{%load customFilters%}
+<div class="mt-1 mb-2" >
+    <form id="formComment-{{pid}}-{{id}}">
+        <input type="hidden" value="{{id}}" name="forComment">
+        <input type="hidden" value="{{pid}}" name="post">
+        {%csrf_token%}
+        <div class="row">
+            <div class="col-sm-2">
+                <label class="form-label" style="font-size: 13px; font-weight: bold;">{{cType}}</label>
+            </div>
+            <div class="col-sm-10">
+                {%createString "comment-area-" pid "-" id as commentId%}
+                {%createString "cChars-" pid "-" id as cEleId%}
+                <textarea class="form-control" autocomplete=off name="commentArea" maxlength="256" rows="2" 
+                id="{{commentId}}" oninput="remainingChars('{{commentId}}', '{{cEleId}}')"></textarea>
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col-sm-4">
+                <button class="btn btn-primary btn-sm w-100" onclick="postComment(event, '{{pid}}-{{id}}')">{{cType}}</button>
+            </div>
+            <div class="col-sm-8">
+                <p class="float-end" style="font-size: 12px;" id="{{cEleId}}">0/256</p>
+            </div>
+        </div>
+    </form>
+</div>

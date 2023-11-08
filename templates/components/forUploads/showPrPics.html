@@ -1,0 +1,62 @@
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static "css/uploadsStyles.css" %}">
+{% endblock head %}
+
+{% load customFilters %}
+{% setvar pPics.object_list|transform:3 as Pics%}
+<div class="d-flex justify-content-start">
+    <button class="btn btn-link" onclick="showUploads()">Back</button>
+</div>
+
+{% for imgs in Pics %}
+<div class="row mt-2">
+    
+    {%for pic in imgs%}
+    <div class="col-sm-4">
+        <div class="card w-100">
+            {% isDefaultImg pic as isDefault%}
+            {%if isDefault == False%}
+            <div class="card-header">
+                <div class="d-flex justify-content-end">
+                    {% if show == 0 %}
+                    {%createString "?dpPath=" pic as picPath%}
+                    {% else %}
+                    {%createString "?pPath=" pic as picPath%}
+                    {% endif %}
+                    <a class="float-end" href="javascript:void(0)" onclick="deletePic('{{picPath}}')">
+                        {% load static %}
+                        <img src="{% static "images/trash3.svg" %}">
+                    </a>
+                </div>
+            </div>
+            {%endif%}
+            <div class="card-body uploadedImages ">
+                <img src="{{pic}}" alt="">
+            </div>
+        </div>
+    </div>
+    {%endfor%}
+ 
+</div>
+
+{% endfor %}
+<nav>
+    <ul class="pagination justify-content-center mt-5">
+        {%if show == 0%}
+        {% setvar "proPics" as endPoint %}
+        {%else%}
+        {% setvar "postPics" as endPoint %}
+        {% endif %}
+        {%if pPics.has_previous%}
+        {{pPics.next}}
+        <li class="page-item me-2"><button class="page-link" onclick="goToPreviousPage('nav-Space', 'api/{{endPoint}}/?page={{pPics.previous_page_number}}')">Previous </button></li>
+        {%endif%}
+        <li class="page-item fs-4"><b>Page {{ pPics.number }} of {{ pPics.paginator.num_pages }}. &nbsp;</b></li>
+        
+
+        {%if pPics.has_next%}
+        <li class="page-item"><button class="page-link" onclick="goToNextPage('nav-Space','api/{{endPoint}}/?page={{pPics.next_page_number}}')"> Next</button></li>
+        {%endif%}
+    </ul>
+</nav>

@@ -1,0 +1,78 @@
+{%load customFilters%}
+
+{%if results%}
+<div class="card w-75">
+
+    <div class="card-header">
+        <h3>Results</h3>
+    </div>
+    <div class=card-body>
+        <ul class="list-group">
+                    
+            {%for user in results%}
+            <li class="list-group-item pb-4 pt-4">
+                {%if user.profile_pic%}
+                <div class="float-start searchUserImg" >
+                    <img src="{{user.profile_pic.url}}">
+                </div>
+                {%endif%}
+                &nbsp;&nbsp;{{user.firstname}}&nbsp;{{user.lastname}}&nbsp;<small>({{user.username}})</small>
+                <div class="float-end">
+                    {% isRequested request.user user as isRequest%}
+                    {% isRequested user request.user as haveRequest%}
+                    {% areFriends request.user user as areFriend %}
+                    {%if isRequest%}
+                    <div>
+                        <h6>Requested</h6>
+                        {%createString "api/delRequest/" request.user.id "/" user.id "/?find=" query "&page=" results.number as dURL %}
+                        <button class="btn btn-danger btn-sm"        
+                            onclick="cancelRequest('searchResult', '{{dURL}}')">Cancel Request</button>
+                    </div>
+                    {%elif haveRequest%}
+                    <div>
+                        
+                        {%createString "api/acceptRequest/" user.id "/?find=" query "&page=" results.number as aURL%}
+                        <button class="btn btn-success btn-sm" onclick="acceptRequest('searchResult', '{{aURL}}')">Accept</button>
+                        
+                        {%createString "api/delRequest/" user.id "/" request.user.id "/?find=" query "&page=" results.number as rURL%}
+                        <button class="btn btn-danger btn-sm" onclick="cancelRequest('searchResult', '{{rURL}}')">Reject</button>
+                    </div>
+                    {%elif areFriend%}
+                    {%createString "api/unfriend/?userId=" request.user.id "&friendId=" user.id "&find=" query "&page=" results.number as ufURL%}
+                    <button class="btn btn-danger btn-sm" onclick="unfriend('searchResult', '{{ufURL}}')">UnFriend</button>
+                    {% comment %} <p>friend{{user}}</p> {% endcomment %}
+                    {%else%}
+                    
+                    {%createString "api/sendRequest/" user.id "/?find=" query "&page=" results.number as sURL %}
+                    <button class="btn btn-primary btn-sm" onclick="sendRequest('{{sURL}}')">
+                        Add Friend
+                    </button>
+                    {%endif%}
+                </div>
+            </li>
+            {%endfor%}
+        </ul>
+        <nav>
+            <ul class="pagination justify-content-center">
+                {%if results.has_previous%}
+                <li class="page-item me-2">
+                    {%createString "api/searchUsers/?find=" query "&page=" results.previous_page_number as prevUrl%}
+                    <button class="page-link" onclick="goToPreviousPage('searchResult','{{prevUrl}}')">Previous</button>
+                </li>
+                {%endif%}
+                <li class="page-item fs-4">
+                    <b>Page {{ results.number }} of {{ results.paginator.num_pages }}.&nbsp;</b>
+                </li>
+                {%if results.has_next%}
+                <li class="page-item">
+                    {%createString "api/searchUsers/?find=" query "&page=" results.next_page_number as nextUrl%}
+                    <button class="page-link" onclick="goToNextPage('searchResult', '{{nextUrl}}')">Next</button>
+                </li>
+                {%endif%}
+            </ul>
+        </nav>
+    </div>
+</div>
+{%else%}
+<h3>No Users Found</h3>
+{%endif%}

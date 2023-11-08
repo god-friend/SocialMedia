@@ -1,0 +1,28 @@
+{% load customFilters %}
+<div class="card w-75" style="height: 300px; overflow-y: scroll;">
+    <div class="card-title">
+        <h3><b>{{title}}</b></h3>
+    </div>    
+    <ul class="list-group">
+    {%for gRequest in reQ%}
+        {%if requestType == "r" %}
+            <li class="list-group-item">{{gRequest.by.get_fullname}}
+                <div class="float-end">
+                    {%createString "api/acceptRequest/" gRequest.by.id as aURL%}
+                    <button class="btn btn-sm btn-success me-2" onclick="acceptRequest('main-Space', '{{aURL}}')">Accept</button>
+
+                    {%createString "api/delRequest/" gRequest.by.id "/" request.user.id as rURL %}
+                    <button class="btn btn-sm btn-danger me-2" onclick="cancelRequest('main-Space', '{{rURL}}')">Reject</button>
+                </div>
+            </li>
+        {%else%}
+            <li class="list-group-item">{{gRequest.to.get_fullname}}
+                <div class="float-end">
+                    {%createString "api/delRequest/" request.user.id "/" gRequest.to.id as cURL%}
+                    <button class="btn btn-sm btn-danger me-2" onclick="cancelRequest('main-Space','{{cURL}}')">Cancel Request</button>
+                </div>
+            </li>
+        {%endif%}
+    {%endfor%}
+    </ul>
+</div>
