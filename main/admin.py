@@ -8,7 +8,7 @@ class UserAdmin(admin.ModelAdmin):
     list_display = ["id", "username", "last_login", "created", "is_staff", "is_active", "is_superuser"]
     
 class PostAdmin(admin.ModelAdmin):
-    list_display = ["id", "__str__", "upload_date", "edited"]
+    list_display = ["id", "__str__", "upload_date"]
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ["id", "__str__", "created", "reply"]

@@ -33,7 +33,6 @@ class Users(AbstractBaseUser, PermissionsMixin):
         return self.firstname + " " + self.lastname
     
     def friends(self):
-        # f = Q(user=self) | Q(friend=self)
         queryset = self.friendOf.filter(user=self).values_list("friend_id")
         q2 = self.friend.filter(friend=self).values_list("user_id").union(queryset)
         return q2
@@ -65,7 +64,6 @@ class Posts(models.Model):
     post_text = models.CharField(max_length=1024)
     pics_path = models.CharField(max_length=1024, default="")
     upload_date = models.DateTimeField(auto_now=True)
-    edited = models.BooleanField(default=False)
     urls = models.JSONField(default=dict)
     likes = models.IntegerField(default=0)
 
