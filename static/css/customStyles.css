@@ -138,7 +138,7 @@
 .dropdown-menu li a{
     padding: 3px;
     margin: 0;
-    font-size: 20px;
+    font-size: 16px;
     color: black;
     white-space: normal;
 }
@@ -195,7 +195,7 @@
         max-width: 50px;
     }
     .dropdown-menu li a{
-        font-size: 16px;
+        font-size: 14px;
     }
 }
 

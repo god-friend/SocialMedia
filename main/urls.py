@@ -2,6 +2,7 @@ from django.urls import path
 
 from .views import sign_out, LoginUser, NewUser
 from .views import homePage, accountPage, notificationPage, requestsPage, searchPage
+from .views import changePassword
 
 urlpatterns = [
     path('', LoginUser.as_view(), name="login"),
@@ -11,5 +12,6 @@ urlpatterns = [
     path("account/", accountPage, name="accountPage"),
     path("notifications/", notificationPage, name="notifications"),
     path("requests/", requestsPage, name="requestsPage"),
-    path("search/", searchPage, name="searchPage")
+    path("search/", searchPage, name="searchPage"),
+    path("changePassword/", changePassword, name="changePassword")
 ]

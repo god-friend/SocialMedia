@@ -144,3 +144,27 @@ def searchPage(request):
         }
         return render(request, "main_app/index.html", data)
     return HttpResponse("Method Not Allowed")
+
+def changePassword(request):
+    if not request.user.is_authenticated:
+        return redirect("/")
+    
+    if request.method == "GET":
+        data = {
+            "pageType": "changePassword"
+        }
+        return render(request, "main_app/index.html", data)
+    
+    if request.method == "POST":
+        data = request.POST
+        newPass = data["nPass"]
+        confirmPass = data["cPass"]
+        
+        if newPass == confirmPass:
+            user = request.user
+            user.set_password(newPass)
+            user.save()
+        
+        return redirect("/logout")
+        
+    return HttpResponse("Method Not Allowed")

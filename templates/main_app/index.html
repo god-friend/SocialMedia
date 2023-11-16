@@ -34,6 +34,8 @@
     {% include "components/forRequest/requests.html" %}
     {% elif pageType == "search" %}
     {% include "components/forSearch/searchPage.html" %}
+    {% elif pageType == "changePassword" %}
+    {% include "auth/changePassword.html" %}
     {% endif %}
 
 
