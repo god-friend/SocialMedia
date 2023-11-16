@@ -11,7 +11,7 @@ ws.onmessage = function(e){
     
 
     var data = JSON.parse(e['data']);
-    console.log(data);
+
     if(data["gotComment"] != undefined){    
         notificationBody.innerText = "";
         notificationBody.innerText = data["gotComment"];

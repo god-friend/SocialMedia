@@ -21,7 +21,6 @@ def upload_profile_pic(instance, file):
 
 
 def getAllPics(path):
-    # print(MEDIA_DIR)
     return os.listdir(MEDIA_DIR+path)
 
 
@@ -52,7 +51,6 @@ def delete_post_pics(instance):
     os.rmdir(instance.pics_path)
 
 
-# Need to delete Dir if empty
 def delPic(picLocation):
     filePath = MEDIA_DIR + "/" + picLocation
     exists = os.path.exists(filePath)

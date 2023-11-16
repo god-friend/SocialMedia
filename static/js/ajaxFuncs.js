@@ -7,6 +7,15 @@ function changeHistoryState(endpoint){
     history.pushState(null, null, "/"+endpoint);
 }
 
+function closeNavOnClick(){
+    var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    if (width < 1000){
+        document.getElementById("mainSideBar").style.width = "0";
+        var openNavBtn = document.getElementById("openNavBtn");
+        openNavBtn.style.display = "table-cell";
+    }
+}
+
 function getCookie(name){
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
@@ -62,7 +71,7 @@ function postComment(event, id){
 }
 
 function deleteComment(id, pid){
-    // console.log(id);
+
     var URL = "http://" + location.host + "/api/delComment/" + id;
     $.ajax({
         url: URL,
@@ -127,7 +136,7 @@ function newPost(){
             e.preventDefault();
             var form = $("#newPostForm")[0];
             var form_Data = new FormData(form)
-            console.log();
+
             postFormAjax("main-Space","api/feedPage", form_Data);
         }
     )
@@ -137,6 +146,7 @@ function goHome(){
     getAjaxRequest("main-Space","api/feedPage");
     changeHistoryState("home/");
     window.scrollTo(0,0);
+    closeNavOnClick();
 }
 
 function showFullPost(divId, url){
@@ -148,6 +158,7 @@ function goToAccount(){
     getAjaxRequest("main-Space","api/account/");
     changeHistoryState("account/");
     window.scrollTo(0,0);
+    closeNavOnClick();
 }
 
 function changeUserInfo(){
@@ -155,7 +166,7 @@ function changeUserInfo(){
         e.preventDefault();
         var form = $("#changeUserInfoForm")[0];
         var form_Data = new FormData(form);
-        // console.log(form);
+
         postFormAjax("nav-Space", "api/myAccount", form_Data);
     })
 }
@@ -211,6 +222,7 @@ function goToSearch(){
     getAjaxRequest("main-Space", "api/searchPage");
     changeHistoryState("search/");
     window.scrollTo(0,0);
+    closeNavOnClick();
 }
 
 function searchUsers(){
@@ -235,6 +247,7 @@ function getRequests(){
     getAjaxRequest("main-Space", "api/requestPage");
     changeHistoryState("requests/");
     window.scrollTo(0,0);
+    closeNavOnClick();
 }
 
 function acceptRequest(divId, url){
@@ -258,6 +271,7 @@ function getNotifications(){
     getAjaxRequest("main-Space", "api/getNots");
     changeHistoryState("notifications/");
     window.scrollTo(0,0);
+    closeNavOnClick();
 }
 
 function getNotificationPage(page){

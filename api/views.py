@@ -141,9 +141,9 @@ def showfullpost(request, format=None):
     pid = request.query_params.get("pid")
     back = request.query_params.get("back")
     divId = request.query_params.get("divId")
-    # print("in")
+
     post = Posts.objects.get(id=pid)
-    # print(post)
+
     data = {
         "posts": post,
     }
@@ -226,7 +226,7 @@ def searchUsers(request, format=None):
     current_user = request.user
     
     query = (Q(firstname__contains=find) | Q(lastname__contains=find)) & ~Q(username=current_user)
-    # exQuery = Q(id__in=current_user.friends().values("friend_id")) | Q(id__in=current_user.friends().values("user_id"))
+    
     
     users = Users.objects.filter(query)
     
@@ -330,7 +330,7 @@ def unfriendUsers(request):
 def showFriends(request, format=None):
     
     friends_id = request.user.friends()
-    # print(friends_id)
+
     query = Q(id__in=friends_id)
     friends = Users.objects.filter(query)
     pages = Paginator(friends, 1)
@@ -444,7 +444,7 @@ class HomeView(APIView):
     def get(self, request, format=None):
         friends = request.user.friends()
         query = Q(by__in=friends) | Q(by=request.user)
-        # print(list(friends))
+
         post = Posts.objects.filter(query).order_by("-upload_date")
         data = {
             "post": post
@@ -455,7 +455,7 @@ class HomeView(APIView):
     def post(self, request, format=None):
         text = request.POST["post_text"]
         files = request.FILES.getlist("pics")
-        # print(text, files)
+
         post = Posts.objects.create(by=request.user)
         post.post_text = text
         path = ""
@@ -471,7 +471,6 @@ class HomeView(APIView):
         post.urls = urls
         post.pics_path = path
         post.save()
-        # print(request.data)
 
         return redirect("/api/feedPage")
     

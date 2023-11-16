@@ -40,7 +40,7 @@
                     {%elif areFriend%}
                     {%createString "api/unfriend/?userId=" request.user.id "&friendId=" user.id "&find=" query "&page=" results.number as ufURL%}
                     <button class="btn btn-danger btn-sm" onclick="unfriend('searchResult', '{{ufURL}}')">UnFriend</button>
-                    {% comment %} <p>friend{{user}}</p> {% endcomment %}
+                    
                     {%else%}
                     
                     {%createString "api/sendRequest/" user.id "/?find=" query "&page=" results.number as sURL %}
