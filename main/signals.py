@@ -1,7 +1,7 @@
 from django.dispatch import receiver
 from django.db.models.signals import post_delete, post_save
 
-from .models import Posts, Requests, Comments, Notifications
+from .models import Posts, Requests, Comments, Notifications, Likes
 
 from .extras import delete_post_pics
 
@@ -13,23 +13,25 @@ import json
 
 layer = get_channel_layer()
 
-
 @receiver(post_save, sender=Posts)
 def notify_friend_new_post(sender, instance, **kwargs):
     if not instance.post_text:
         return
     
-    data = {
-        "gotNewPost": "You got new Posts"
-    }
+    try:
+        obj = sender.objects.get(id=instance.id)
+    except:
+        data = {
+            "gotNewPost": "You got new Posts"
+        }
 
-    friends = instance.by.friends()
-    for friend in friends:
-        group = "user_{0}".format(friend[0])
-        async_to_sync(layer.group_send)(group, {
-            "type": "send.update",
-            "text": json.dumps(data)
-        })
+        friends = instance.by.friends()
+        for friend in friends:
+            group = "user_{0}".format(friend[0])
+            async_to_sync(layer.group_send)(group, {
+                "type": "send.update",
+                "text": json.dumps(data)
+            })
 
 
 @receiver(post_delete, sender=Posts)
@@ -54,9 +56,7 @@ def notify_user_request(sender, instance, **kwargs):
 
 @receiver(post_delete, sender=Requests)
 def notify_user_del_request(sender, instance, **kwargs):
-    # layer = get_channel_layer()
     group = "user_{0}".format(instance.to.id)
-    # print(group)
     count = Requests.objects.filter(to=instance.to).count()
     data = {
         "count": count,
@@ -97,10 +97,8 @@ def notify_user_comment(sender, instance, **kwargs):
 
     noti = Notifications.objects.create(**data)
     
-    count = toUser.notify_count()
     group = "user_{0}".format(toUser.id)
     nData = {
-        "ncount": count,
         "gotComment": noti.notification
     }
     async_to_sync(layer.group_send)(group, {
@@ -111,14 +109,38 @@ def notify_user_comment(sender, instance, **kwargs):
 
 @receiver(post_save, sender=Notifications)
 def update_count(sender, instance, **kwargs):
-    if instance.isread == True:
-        toUser = instance.to
-        count = toUser.notify_count()
-        group = "user_{0}".format(toUser.id)
-        nData = {
-            "ncount": count,
+    toUser = instance.to
+    count = toUser.notify_count()
+    group = "user_{0}".format(toUser.id)
+    nData = {
+        "ncount": count,
+    }
+    async_to_sync(layer.group_send)(group, {
+        "type": "send.update",
+        "text": json.dumps(nData)
+    })
+
+
+@receiver(post_save, sender=Likes)
+def notify_user_like(sender, instance, **kwargs):
+    postByUser = instance.likedPost.by
+    likedByUser = instance.byUser
+    
+    if postByUser != likedByUser:
+        data = {
+            "to": postByUser,
+            "forPost": instance.likedPost,
+            "notification": likedByUser.get_fullname() + " Liked Your post.",
+        }
+        
+        noti = Notifications.objects.create(**data)
+    
+    
+        group = "user_{0}".format(postByUser.id)
+        data = {
+            "gotLike": noti.notification,
         }
         async_to_sync(layer.group_send)(group, {
             "type": "send.update",
-            "text": json.dumps(nData)
+            "text": json.dumps(data)
         })

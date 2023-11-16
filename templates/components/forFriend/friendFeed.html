@@ -33,7 +33,7 @@
 </div>
 
 {%for post in userPosts%}
-<div class="d-flex justify-content-center mt-1">
-    {% include 'components/forPosts/post.html' with posts=post goBack="fFeed" divId="nav-Space"%}
+<div class="d-flex justify-content-center mt-1" id="postId-{{post.id}}">
+    {% include 'components/forPosts/post.html' with posts=post goBack="fFeed" divId="nav-Space" loc="friendFeedPage"%}
 </div>
 {%endfor%}

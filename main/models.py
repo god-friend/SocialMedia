@@ -63,7 +63,7 @@ class Posts(models.Model):
     by = models.ForeignKey(Users, on_delete=models.CASCADE)
     post_text = models.CharField(max_length=1024)
     pics_path = models.CharField(max_length=1024, default="")
-    upload_date = models.DateTimeField(auto_now=True)
+    upload_date = models.DateTimeField(auto_now_add=True)
     urls = models.JSONField(default=dict)
     likes = models.IntegerField(default=0)
 
@@ -123,3 +123,8 @@ class Notifications(models.Model):
 
     def __str__(self):
         return self.notification
+    
+class Likes(models.Model):
+    byUser = models.ForeignKey("Users", on_delete=models.CASCADE, related_name="likes")
+    likedPost = models.ForeignKey("Posts", on_delete=models.CASCADE, related_name="likedPosts")
+    

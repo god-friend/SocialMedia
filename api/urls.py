@@ -5,7 +5,7 @@ from .views import HomeView, uploadPage
 from .views import showProfilePics, showPostPics, deletePics
 from .views import showfullpost
 from .views import searchPage, searchUsers
-from .views import CommentView
+from .views import CommentView, likePost
 from .views import sendRequest, delRequest, requestPage, acceptRequest
 from .views import showFriends, unfriendUsers, myFriendFeed
 from .views import deletePost, myPosts
@@ -22,6 +22,7 @@ urlpatterns = [
     path('deletePost/', deletePost, name="deletePost"),
     path('fullPost/', showfullpost, name="fullPost"),
     path('myPosts/', myPosts, name="myPosts"),
+    path("likePost/<int:requestType>/", likePost, name="likePost"),
     path('postComment/', CommentView.as_view(), name="postComment"),
     path('delComment/<int:cid>', CommentView.as_view(), name="delComment"),
     path('searchPage/', searchPage, name="searchPage"),

@@ -27,6 +27,14 @@ function changeMainSpace(divId, response){
     $("body").removeAttr("style");
 }
 
+function likePost(divId, url){
+    getAjaxRequest(divId, url);
+}
+
+function unlikePost(divId, url){
+    getAjaxRequest(divId, url);
+}
+
 function postComment(event, id){
 
     $("#formComment-"+id).submit(function(e){
@@ -128,6 +136,7 @@ function newPost(){
 function goHome(){
     getAjaxRequest("main-Space","api/feedPage");
     changeHistoryState("home/");
+    window.scrollTo(0,0);
 }
 
 function showFullPost(divId, url){
@@ -138,6 +147,7 @@ function showFullPost(divId, url){
 function goToAccount(){
     getAjaxRequest("main-Space","api/account/");
     changeHistoryState("account/");
+    window.scrollTo(0,0);
 }
 
 function changeUserInfo(){
@@ -156,14 +166,17 @@ function showUserInfo(){
 
 function showUploads(){
     getAjaxRequest("nav-Space", "api/uploads");
+    window.scrollTo(0,0);
 }
 
 function showProfilePics(){
     getAjaxRequest("nav-Space", "api/proPics");
+    window.scrollTo(0,0);
 }
 
 function showPostPics(){
     getAjaxRequest("nav-Space", "api/postPics");
+    window.scrollTo(0,0);
 }
 
 function deletePic(picPath){
@@ -172,10 +185,12 @@ function deletePic(picPath){
 
 function showFriends(){
     getAjaxRequest("nav-Space", "api/myFriends");
+    window.scrollTo(0,0);
 }
 
 function showMyPosts(){
     getAjaxRequest("nav-Space", "api/myPosts");
+    window.scrollTo(0,0);
 }
 
 function deletePost(divId, url){
@@ -184,15 +199,18 @@ function deletePost(divId, url){
 
 function goToNextPage(divId, query){
     getAjaxRequest(divId, query);
+    window.scrollTo(0,0);
 }
 
 function goToPreviousPage(divId, query){
     getAjaxRequest(divId, query);
+    window.scrollTo(0,0);
 }
 
 function goToSearch(){
     getAjaxRequest("main-Space", "api/searchPage");
     changeHistoryState("search/");
+    window.scrollTo(0,0);
 }
 
 function searchUsers(){
@@ -216,6 +234,7 @@ function cancelRequest(divId, url){
 function getRequests(){
     getAjaxRequest("main-Space", "api/requestPage");
     changeHistoryState("requests/");
+    window.scrollTo(0,0);
 }
 
 function acceptRequest(divId, url){
@@ -232,21 +251,24 @@ function unfriend(divId, url){
 
 function getFriendFeed(id){
     getAjaxRequest("nav-Space", "api/friendFeed/" + id);
+    window.scrollTo(0,0);
 }
 
 function getNotifications(){
     getAjaxRequest("main-Space", "api/getNots");
     changeHistoryState("notifications/");
+    window.scrollTo(0,0);
 }
 
 function getNotificationPage(page){
     getAjaxRequest("main-Space", "api/getNots/?page="+page);
+    window.scrollTo(0,0);
 }
 
 function readNotification(url){
     getAjaxRequest("main-Space", url);
+    window.scrollTo(0,0);
 }
-
 
 function markAllRead(){
     getAjaxRequest("main-Space", "api/readAllNots");

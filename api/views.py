@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 
 from main.forms import ChangeUserForm
 from main.models import Users, Posts
-from main.models import Comments, Requests
+from main.models import Comments, Requests, Likes
 from main.models import Friends, Notifications
 from main.extras import upload_post_pics, getAllPics, delPic
 
@@ -140,24 +140,77 @@ def deletePics(request):
 def showfullpost(request, format=None):
     pid = request.query_params.get("pid")
     back = request.query_params.get("back")
-        
+    divId = request.query_params.get("divId")
+    # print("in")
     post = Posts.objects.get(id=pid)
+    # print(post)
+    data = {
+        "posts": post,
+    }
     
     if back == "home":
         back = "goHome()"
+        data["homeBackPage"] = "home"
     elif back == "fFeed":
         back = "getFriendFeed('{0}')".format(post.by.id)
+        data["friendBackPage"] = "fFeed"
     elif back == "mePosts":
         back = "showMyPosts()"
+        data["meBackPage"] = "mePosts"
     elif back == "notifications":
         page = request.query_params.get("page")
         back = "getNotificationPage('{0}')".format(page)
+        data["notiBackPage"] = page
+        
+    data["back"] = back
+    data["divId"] = divId
+    
+    return Response(data, template_name="components/forPosts/full_post.html")
+
+
+@api_view(['get'])
+@renderer_classes([TemplateHTMLRenderer])
+def likePost(request, requestType):
+    postId = request.query_params.get("postId")
+    pageType = request.query_params.get("pageType")
+    post = Posts.objects.get(id=postId)
+    currentLikes = post.likes
+    if requestType == 0:
+        post.likes = currentLikes + 1
+        post.save()
+        Likes.objects.create(byUser=request.user, likedPost=post)
+    elif requestType == 1:
+        post.likes = currentLikes - 1
+        post.save()
+        lObj = Likes.objects.get(byUser=request.user, likedPost=post)
+        lObj.delete()
         
     data = {
-        "back": back,
-        "posts": post
-    }    
-    return Response(data, template_name="components/forPosts/full_post.html")
+            "posts": post,
+        }
+    if pageType == "feedPage":
+        data["loc"] = "home"
+        data["goBack"] = "home"
+        data["divId"] = "main-Space"
+    elif pageType == "myPostsPage":
+        data["loc"] = "myPosts"
+        data["goBack"] = "mePosts"
+        data["divId"] = "nav-Space"
+    elif pageType == "friendFeedPage":
+        data["loc"] = "friendFeedPage"
+        data["goBack"] = "fFeed"
+        data["divId"] = "nav-Space"
+    elif pageType == "fullPage":
+        back = request.query_params.get("back")
+        divId = request.query_params.get("divId")
+        url = "/api/fullPost/?pid={0}&back={1}&divId={2}".format(postId, back, divId)
+        if back == "notifications":
+            page = request.query_params.get("page")
+            url += "&page={0}".format(page)
+             
+        return redirect(url)
+    
+    return Response(data, template_name="components/forPosts/post.html")
 
 
 @api_view(['get'])
@@ -363,11 +416,10 @@ def read_notification(request):
     post_id = obj.forPost.id
     obj.save()
 
-    url = ""
+    url = "/api/fullPost/?pid={0}&back=notifications&divId=main-Space".format(post_id)
     if page:
-        url = "/api/fullPost/?pid={0}&back={1}&page={2}".format(post_id, "notifications", page)
-    else:
-        url = "/api/fullPost/?pid={0}&back={1}".format(post_id, "notifications")
+        url += "&page={0}".format(page)
+        
     return redirect(url)
 
 
@@ -382,7 +434,7 @@ def readAllNots(request):
     
     return redirect("/api/getNots")
 
-
+     
 class HomeView(APIView):
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated]

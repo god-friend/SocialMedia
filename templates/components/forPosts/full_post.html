@@ -32,13 +32,42 @@
             </div>
             {% endfor %}
 
-
+            {%if homeBackPage %}
+            {%setvar homeBackPage as bck%}
+            {% elif friendBackPage %}
+            {%setvar friendBackPage as bck%}
+            {% elif meBackPage %}
+            {%setvar meBackPage as bck%}
+            {% elif notiBackPage %}
+            {%setvar "notifications" as bck%}
+            {%setvar notiBackPage as page%}
+            {%endif%}
 
             <div class="mt-3">
-                <a href="#" class="btn btn-outline-primary btn-sm position-relative">
-                    Like&nbsp;
-                    <span class="position-relative  badge rounded-pill bg-success">{{posts.likes}}</span>
+                {%isLiked request.user posts as likedPost%}
+                {%if likedPost %}
+                    {% if bck == "notifications" %}
+                        {%createString "api/likePost/1/?pageType=fullPage&postId=" posts.id "&back=" bck "&divId=" divId "&page=" page as lURL%}
+                    {% else %}
+                        {%createString "api/likePost/1/?pageType=fullPage&postId=" posts.id "&back=" bck "&divId=" divId as lURL%}
+                    {% endif %}
+                
+                <a href="javascript:void(0)" class="btn btn-primary btn-sm position-relative" onclick="unlikePost('{{divId}}', '{{lURL}}')">
+                    Unlike&nbsp;
+                    <span class="position-relative badge rounded-pill bg-success">{{posts.likes}}</span>
                 </a>
+                {%else%}
+                    {% if bck == "notifications" %}
+                        {%createString "api/likePost/0/?pageType=fullPage&postId=" posts.id "&back=" bck "&divId=" divId "&page=" page as lURL%}
+                    {% else %}
+                        {%createString "api/likePost/0/?pageType=fullPage&postId=" posts.id "&back=" bck "&divId=" divId as lURL%}
+                    {% endif %}
+                
+                <a href="javascript:void(0)" class="btn btn-outline-primary btn-sm position-relative" onclick="likePost('{{divId}}', '{{lURL}}')">
+                    Like&nbsp;
+                    <span class="position-relative badge rounded-pill bg-success">{{posts.likes}}</span>
+                </a>
+                {%endif%}
                 <a class="btn btn-outline-success btn-sm" data-bs-toggle="collapse"
                     href="#collapseComment-{{posts.id}}">Comment</a>
             </div>

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .forms import Users
-from .models import Posts, Comments, Friends, Requests, Notifications
+from .models import Posts, Comments, Friends, Requests, Notifications, Likes
 # Register your models here.
 
 
@@ -21,6 +21,9 @@ class RequestAdmin(admin.ModelAdmin):
 
 class NotificationsAdmin(admin.ModelAdmin):
     list_display = ["id", "to", "isread", "created", "notification", "forPost"]
+    
+class LikesAdmin(admin.ModelAdmin):
+    list_display = ["id", "byUser", "likedPost"]
 
 admin.site.register(Users, UserAdmin)
 admin.site.register(Posts, PostAdmin)
@@ -28,3 +31,4 @@ admin.site.register(Comments, CommentAdmin)
 admin.site.register(Friends, FriendsAdmin)
 admin.site.register(Requests, RequestAdmin)
 admin.site.register(Notifications, NotificationsAdmin)
+admin.site.register(Likes, LikesAdmin)
