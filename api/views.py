@@ -9,8 +9,6 @@ from main.models import Friends, Notifications
 from main.extras import upload_post_pics, getAllPics, delPic
 
 from rest_framework.views import APIView
-from rest_framework.authentication import SessionAuthentication
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.decorators import api_view, renderer_classes
@@ -436,8 +434,6 @@ def readAllNots(request):
 
      
 class HomeView(APIView):
-    authentication_classes = [SessionAuthentication]
-    permission_classes = [IsAuthenticated]
     renderer_classes = [TemplateHTMLRenderer]
     template_name = "components/homePage/feedPage.html"
     
@@ -476,8 +472,6 @@ class HomeView(APIView):
     
 
 class UserView(APIView):
-    authentication_classes = [SessionAuthentication]
-    permission_classes = [IsAuthenticated]
     renderer_classes = [TemplateHTMLRenderer]
     template_name = "components/forAccount/account.html"
     
@@ -510,8 +504,6 @@ class UserView(APIView):
     
     
 class CommentView(APIView):
-    authentication_classes = [SessionAuthentication]
-    permission_classes = [IsAuthenticated]
     renderer_classes = [TemplateHTMLRenderer]
     template_name = "components/forComments/showComments.html"
     
