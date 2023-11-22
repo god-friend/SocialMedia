@@ -168,7 +168,9 @@ function changeUserInfo(){
         var form_Data = new FormData(form);
 
         postFormAjax("nav-Space", "api/myAccount", form_Data);
+        location.reload();
     })
+    
 }
 
 function showUserInfo(){

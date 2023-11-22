@@ -37,8 +37,8 @@
                           {{request.user.get_fullname}}
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href={% url 'changePassword' %}>Change Password</a></li>
-                          <li><a class="dropdown-item" href="{% url "logout" %}">Logout</a></li>
+                            <li><a class="dropdown-item" href={% url 'main:changePassword' %}>Change Password</a></li>
+                          <li><a class="dropdown-item" href="{% url "main:logout" %}">Logout</a></li>
                         </ul>
                       </div>
                 </div>

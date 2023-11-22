@@ -5,7 +5,7 @@
     <div class="d-flex flex-column container mt-5">
         {%include 'auth/form.html' with button_name="SignUp" %}
         <span id="message"></span>
-        <label class="p-2 form-label">Already have an Account? <a class="btn btn-link" href="{% url 'login' %}">Login here</a></label>
+        <label class="p-2 form-label">Already have an Account? <a class="btn btn-link" href="{% url 'main:login' %}">Login here</a></label>
 
     </div>
 

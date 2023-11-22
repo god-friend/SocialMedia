@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from .managers import UsersManager
 from django.db import models
 from .extras import upload_profile_pic
-from django.db.models import Q
+
 
 class Users(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(verbose_name="Username", max_length=256, unique=True, help_text="Username Must be Lowercase alphabets")
@@ -53,7 +53,6 @@ class Users(AbstractBaseUser, PermissionsMixin):
         frcount = self.friendOf.filter(user=self, friend=x).count()
         fcount = self.friend.filter(friend=self, user=x).count()
         count = frcount + fcount
-        print(count)
         if count >= 1:
             return True
         return False
