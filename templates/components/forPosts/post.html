@@ -22,7 +22,7 @@
     </div>
     
     <div class="card-body" id="post-card">
-        <p>{{posts.post_text}}</p>
+        <p>{{posts.post_text|linebreaks}}</p>
 
         <div class="row">
             {%for url in posts.urls.urls|slice:":2"%}
