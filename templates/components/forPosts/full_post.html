@@ -15,7 +15,7 @@
             <b>{{posts.by.get_fullname}}</b> <small>posted</small>
         </div>
         <div class="card-body">
-            <p>{{posts.post_text}}</p>
+            <p>{{posts.post_text|linebreaks}}</p>
 
             {%setvar posts.urls.urls|transform:2 as postPics%}
             {% for pics in postPics %}
