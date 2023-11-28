@@ -4,6 +4,9 @@ Simple Social Media Web App with live Notifications
 #### Install Redis Server
 > sudo apt install redis-server
 
+#### Confirm Redis Server is Active
+> sudo systemctl status redis
+
 #### Create A Virtual Environment
 > python3 -m venv <venv-name>
 
