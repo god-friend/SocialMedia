@@ -39,3 +39,6 @@ Simple Social Media Web App with live Notifications
 11. User Can Unfriend a Friend
 12. User Can Like Posts
 13. User Can Change Password
+
+
+## Tested on Ubuntu22.04
